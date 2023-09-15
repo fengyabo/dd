@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>财运滚滚</title>
+		<script type="text/javascript" src="./jquery-1.10.2.min.js"></script>
+		
+	</head>
+
+	<body style="width: 100%;text-align: center;">
+        <div style="width:350px;margin: 0 auto;margin-top: 100px;">
+            <div style="font-size: 35px;font-weight: 500;color: chocolate;margin-bottom: 30px;text-align: center;">发财日记</div>
+            <div style="text-align: left;">
+                总公里数：<input type="text" id="km" onchange="int()" style="width: 200px;height: 40px; padding: 0 10px;" placeholder="请输入总公里数">
+            </div>
+            <div style="margin-top: 25px;text-align: left;" >
+                发财数：<span style="font-size: 30px;color:red;font-weight:500;margin-left: 20px;margin-top: 10px;" id="values">0</span>
+            </div>
+        </div>
+		
+	</body>
+   <script>
+     function int(){
+        var count=0;
+        var val=$('#km').val()
+        if(val<200||val==200){
+            count=val*1.5
+            alert(val*1.5)
+            $('#values').text(count)
+        }
+        if(200<val<500){
+            count=200*1.5+(Number(val)-200)*1.4
+            $('#values').text(count)
+        }
+        if(500<val){
+            count=200*1.5+300*1.4+(Number(val)-500)*1.1
+            $('#values').text(count)
+        }
+     }
+  
+   </script>
+</html>
