@@ -1,44 +1,245 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
-
+<html>
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>财运滚滚</title>
-		<script type="text/javascript" src="./jquery-1.10.2.min.js"></script>
-		
-	</head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="jquery-1.10.2.min.js"></script>
+		<style>
+			body {
+				text-align: center;
+                padding: 20px;
+			}
+ 
+			form {
+				display: none;
+			}
+            .mask{
+                background: rgba(0,0,0,0.6);
+                width: 100%;
+                height: 100%;
+                display: none;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
 
-	<body style="width: 100%;text-align: center;">
-        <div style="width:350px;margin: 0 auto;margin-top: 100px;">
-            <div style="font-size: 35px;font-weight: 500;color: chocolate;margin-bottom: 30px;text-align: center;">发财日记</div>
-            <div style="text-align: left;">
-                总公里数：<input type="text" id="km" onchange="int()" style="width: 200px;height: 40px; padding: 0 10px;" placeholder="请输入总公里数">
-            </div>
-            <div style="margin-top: 25px;text-align: left;" >
-                发财数：<span style="font-size: 30px;color:red;font-weight:500;margin-left: 20px;margin-top: 10px;" id="values">0</span>
+            }
+            .pup{
+                background: #fff;
+                width: 30%;
+                margin: 0 auto;
+                position: relative;
+                top: 60px;
+            }
+            .form{
+                background: #fff;
+                width: 40%;
+                margin: 0 auto;
+                padding: 30px;
+            }
+            .btn{
+                width: 100%;
+                text-align: right;
+                height: 32px;
+            }
+            #add{
+                background: blue;
+                color: #fff;
+                border: none;
+                width: 60px;
+                height: 32px;
+                line-height: 32px;
+            }
+		</style>
+	</head>
+	<body>
+        <p class="btn">
+			<input type="button" value="新增" id="add" />
+		</p>
+		<table border="1" cellspacing="0" cellpadding="10" style="width: 100%;">
+			<tr>
+				<th>序号</th>
+				<th>司机</th>
+				<th>日期</th>
+				<th>单号</th>
+				<th>车型</th>
+                <th>起点</th>
+                <th>终点</th>
+                <th>公里</th>
+                <th>金额</th>
+                <th>编辑</th>
+                <th>删除</th>
+			</tr>
+		</table>
+		
+        <div class="mask">
+            <div class="pup">
+                <form class="form">
+                    <p>
+                        <label>司机：<input id="name"></label>
+                    </p>
+                    <p>
+                        <label>日期：<input id="date"></label>
+                    </p>
+         
+                    <p>
+                        <label>单号：<input id="number"></label>
+                    </p>
+                    <p>
+                        <label>车型：<input id="car"></label>
+                    </p>
+                    <p>
+                        <label>起点：<input id="start"></label>
+                    </p>
+                    <p>
+                        <label>终点：<input id="end"></label>
+                    </p>
+                    <p>
+                        <label>公里：<input id="km"></label>
+                    </p>
+                    <p>
+                        <label>金额：<input id="yuan"></label>
+                    </p>
+                    <p>
+                        <input type="button" value="确定" id="ok" style="margin-right: 10px;">
+                        <input type="button" value="取消" id="cannel">
+                        
+                    </p>
+                </form>
             </div>
         </div>
+        
 		
+		<script>
+			$(function() {
+				var  modifyTr = null; //修改行
+ 
+				//新增按钮点击事件
+				$("#add").click(function() {
+                    $('.mask').show()
+					$("form").show(); //显示
+					modifyTr = null;
+				})
+
+                //输入公里数
+                $("#km").blur(function() {
+					var val=$('#km').val()
+                    var count=0
+                    if(val<201){
+                        count=val*1.5
+                    }
+                    if(val>200&&val<501){
+                        count=200*1.5+(val-200)*1.4
+                    }
+                    if(val>500){
+                        count=200*1.5+300*1.4+(val-500)*1.1
+                    }
+                    $('#yuan').val(count)
+				})
+ 
+				//确定按钮点击事件
+				$("#ok").click(function() {
+					var name = $("#name").val();
+					var yuan = $("#yuan").val();
+                    var km = $("#km").val();
+                    var end = $("#end").val();
+                    var start = $("#start").val();
+                    var number = $("#number").val();
+                    var car = $("#car").val();
+                    var date = $("#date").val();
+
+					// if (name == "" || hobby == "") {
+					// 	alert("姓名或者爱好不能为空！！！")
+					// 	return;
+					// }
+					if (modifyTr == null) {
+						//新增一行
+						let tr = $("<tr>");
+ 
+						//取序号
+						let seq = 1; //默认序号1
+						if ($("tr").length != 1) {
+							let n = $("tr:last>td:first").text();
+							seq = parseInt(n) + 1;
+						}
+ 
+						//序号td
+						tr.append($("<td>").text(seq));
+						//姓名td
+						tr.append($("<td>").text(name));
+						//爱好td
+						tr.append($("<td>").text(date));
+                        tr.append($("<td>").text(number));
+                        tr.append($("<td>").text(car));
+                        tr.append($("<td>").text(start));
+                        tr.append($("<td>").text(end));
+                        tr.append($("<td>").text(km));
+                        tr.append($("<td>").text(yuan));
+						//编辑td
+						tr.append($("<td>").html("<a class='update' href='#'>编辑</a>"));
+						//删除td
+						tr.append($("<td>").html("<a class='delete' href='#'>删除</a>"));
+						$("table").append(tr);
+ 
+						//清空表单
+						$("form")[0].reset();
+                        $('.mask').hide()
+					} else {
+                        console.log(modifyTr.find("td:eq(1)").text($("#name").val()))
+						//修改
+						modifyTr.find("td:eq(1)").text($("#name").val());
+						modifyTr.find("td:eq(2)").text($("#date").val());
+                        modifyTr.find("td:eq(3)").text($("#number").val());
+						modifyTr.find("td:eq(4)").text($("#car").val());
+                        modifyTr.find("td:eq(5)").text($("#start").val());
+						modifyTr.find("td:eq(6)").text($("#end").val());
+                        modifyTr.find("td:eq(7)").text($("#km").val());
+						modifyTr.find("td:eq(8)").text($("#yuan").val());
+                     
+						//清空表单
+						$("form")[0].reset(); //reset 重置
+						$("form").hide(); //hide 隐藏
+                        $('.mask').hide()
+					}
+				})
+				//编辑按钮点击事件
+				$("table").on('click', '.update', function() {
+                
+					modifyTr = $(this).parent().parent();
+                    $('.mask').show()
+                    $("form").show(); 
+					//取得当前行的姓名和爱好
+					let yuan = $(this).parent().prev().text();
+					let km = $(this).parent().prev().prev().text();
+					let end = $(this).parent().prev().prev().prev().text();
+                    let start = $(this).parent().prev().prev().prev().prev().text();
+                    let car = $(this).parent().prev().prev().prev().prev().prev().text();
+                    let number = $(this).parent().prev().prev().prev().prev().prev().prev().text();
+                    let date = $(this).parent().prev().prev().prev().prev().prev().prev().prev().text();
+                    let name = $(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
+					// 给form表单的输入框赋值
+					$("#number").val(number);
+                    $("#name").val(name);
+					$("#km").val(km)
+                    $("#start").val(start);
+					$("#end").val(end)
+                    $("#car").val(car);
+					$("#date").val(date)
+                    $("#yuan").val(yuan);	
+				})
+				
+				//、删除按钮点击事件
+				$("table").on('click','.delete',function(){
+					$(this).parent().parent().remove();
+				})
+				
+				//取消按钮点击事件
+				$("#cannel").click(function() {
+                    $('.mask').hide()
+					$('form').hide(); //隐藏
+				})
+			})
+		</script>
 	</body>
-   <script>
-     function int(){
-        var count=0;
-        var val=$('#km').val()
-        if(val<200||val==200){
-            count=val*1.5
-            $('#values').text(count)
-        }
-        if(200<val<500){
-            count=200*1.5+(Number(val)-200)*1.4
-            $('#values').text(count)
-        }
-        if(500<val){
-            count=200*1.5+300*1.4+(Number(val)-500)*1.1
-            $('#values').text(count)
-        }
-     }
-  
-   </script>
 </html>
