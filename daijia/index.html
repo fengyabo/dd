@@ -5,6 +5,8 @@
 		<title></title>
         <!-- <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> -->
 		<script src="jquery-1.10.2.min.js"></script>
+        <script src="fil.js"></script>
+        <script src="tableexcel.js"></script>
 		<style>
             html{
   
@@ -65,10 +67,11 @@
 	<body>
         <p class="btn">
 			<input type="button" value="新增" id="add" />
+            <input type="button" id="export" value="导出"/>
+            
 		</p>
-		<table border="1" cellspacing="0" cellpadding="10" style="width: 100%;">
+		<table border="1" cellspacing="0" cellpadding="10" style="width: 100%;" id="tables">
 			<tr>
-				<th>序号</th>
 				<th>司机</th>
 				<th>日期</th>
 				<th>单号</th>
@@ -174,7 +177,7 @@
 						}
  
 						//序号td
-						tr.append($("<td>").text(seq));
+						// tr.append($("<td>").text(seq));
 						//姓名td
 						tr.append($("<td>").text(name));
 						//爱好td
@@ -248,6 +251,13 @@
                     $('.mask').hide()
 					$('form').hide(); //隐藏
 				})
+                $("#export").click(function(){
+                    $("#tables").tableExport({
+                        type:"excel",
+                        ignoreColumn:[8,9],
+                        escape:"false",
+                    });
+                });
 			})
 		</script>
 	</body>
